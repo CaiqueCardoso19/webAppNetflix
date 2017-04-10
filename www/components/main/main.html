@@ -1,0 +1,13 @@
+<div> 
+	<input type="text" name="search" ng-model="film" ng-change="getFilm(film)">
+	length {{title.length}}
+	<li ng-show="title.length != 0">
+		<img ng-src="{{title.poster}}" width="100px">
+		<ol>Name: {{title.show_title}}</ol>			
+		<ol>Rating: {{title.rating}}</ol> 
+		<ol>Release Year: {{title.release_year}}</ol>
+	</li>
+	<br>
+	<br>
+	<button ui-sref="favorites">Go To favs</button>
+</div>
