@@ -1,6 +1,6 @@
 angular.module('webAppNetflix')
 
-.config(function($stateProvider, $urlRouterProvider) {
+.config(($stateProvider, $urlRouterProvider) => {
 	$stateProvider
 	  .state ('main', {
 	    url: '/main',

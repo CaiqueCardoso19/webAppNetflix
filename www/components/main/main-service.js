@@ -6,16 +6,14 @@ angular.module('webAppNetflix')
 	}
 
 	function getFilms(title) {
-		var q = $q.defer()
 		var req = {
-			url: `http://netflixroulette.net/api/api.php?title=${title}`,
+			url: `http://www.omdbapi.com/?t=${title}`,
 			method: 'GET'
 		}
 
-		$http(req)
-		.then(res => q.resolve(res))
-		.catch(err => q.reject(err))
+		return $http(req)
+		.then(res => res.data)
+		.catch(err => err)
 
-		return q.promise
 	}
 })

@@ -4,12 +4,63 @@ angular.module('webAppNetflix', ['ui.router']).config(function ($stateProvider, 
 
 	$urlRouterProvider.otherwise('/main');
 });
-angular.module('webAppNetflix').controller('favoritesCtrl', function ($scope, mainService, storageUtils) {});
+angular.module('webAppNetflix').controller('mainCtrl', function ($scope, mainService, storageUtils) {
+
+	$scope.title = [];
+	$scope.film;
+
+	$scope.getFilms = function (title) {
+		return mainService.getFilms(title).then(function (res) {
+			$scope.title = res;
+			var fav = storageUtils.getItem('favorites') || [];
+
+			if (fav.length === 0) {
+				fav.push(res);
+				storageUtils.setItem('favorites', fav);
+			} else {
+				if (IsIdInArray(fav, res.show_id) === false) {
+					fav.push(res);
+					storageUtils.setItem('favorites', fav);
+				}
+			}
+		}).catch($scope.titles = []);
+	};
+
+	var IsIdInArray = function IsIdInArray(array, id) {
+		var isTrue = false;
+
+		array.forEach(function (item) {
+			if (item.show_id === id) {
+				isTrue = true;
+			}
+		});
+
+		return isTrue;
+	};
+});
+angular.module('webAppNetflix').service('mainService', function ($http, $q) {
+	return {
+		getFilms: getFilms
+	};
+
+	function getFilms(title) {
+		var req = {
+			url: 'http://www.omdbapi.com/?t=' + title,
+			method: 'GET'
+		};
+
+		return $http(req).then(function (res) {
+			return res.data;
+		}).catch(function (err) {
+			return err;
+		});
+	}
+});
 angular.module('webAppNetflix').config(function ($stateProvider, $urlRouterProvider) {
-	$stateProvider.state('favorites', {
-		url: '/favorites',
-		templateUrl: 'components/favorites/favorites.html',
-		controller: 'favoritesCtrl'
+	$stateProvider.state('main', {
+		url: '/main',
+		templateUrl: 'components/main/main.html',
+		controller: 'mainCtrl'
 	});
 });
 angular.module('webAppNetflix').factory('storageUtils', function () {
@@ -31,67 +82,13 @@ angular.module('webAppNetflix').factory('storageUtils', function () {
 		}
 	};
 });
-angular.module('webAppNetflix').controller('mainCtrl', function ($scope, mainService, storageUtils) {
-
-	$scope.title = [];
-	$scope.film;
-
-	$scope.getFilm = function (title) {
-		return mainService.getFilms(title).then(function (res) {
-			$scope.title = res.data;
-			var fav = storageUtils.getItem('favorites') || [];
-
-			if (fav.length === 0) {
-
-				fav.push(res.data);
-				storageUtils.setItem('favorites', fav);
-			} else {
-
-				if (IsIdInArray(fav, res.data.show_id) === false) {
-					fav.push(res.data);
-					storageUtils.setItem('favorites', fav);
-				}
-			}
-		}).catch($scope.titles = []);
-	};
-
-	function IsIdInArray(array, id) {
-		var isTrue = false;
-
-		array.forEach(function (item) {
-			if (item.show_id === id) {
-				isTrue = true;
-			}
-		});
-
-		return isTrue;
-	}
-});
-angular.module('webAppNetflix').service('mainService', function ($http, $q) {
-	return {
-		getFilms: getFilms
-	};
-
-	function getFilms(title) {
-		var q = $q.defer();
-		var req = {
-			url: 'http://netflixroulette.net/api/api.php?title=' + title,
-			method: 'GET'
-		};
-
-		$http(req).then(function (res) {
-			return q.resolve(res);
-		}).catch(function (err) {
-			return q.reject(err);
-		});
-
-		return q.promise;
-	}
+angular.module('webAppNetflix').controller('favoritesCtrl', function ($scope, mainService, storageUtils) {
+	console.log("favs");
 });
 angular.module('webAppNetflix').config(function ($stateProvider, $urlRouterProvider) {
-	$stateProvider.state('main', {
-		url: '/main',
-		templateUrl: 'components/main/main.html',
-		controller: 'mainCtrl'
+	$stateProvider.state('favorites', {
+		url: '/favorites',
+		templateUrl: 'components/favorites/favorites.html',
+		controller: 'favoritesCtrl'
 	});
 });

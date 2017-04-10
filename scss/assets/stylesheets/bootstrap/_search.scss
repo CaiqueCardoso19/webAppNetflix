@@ -1,0 +1,70 @@
+body {
+	background-color:#141414;
+}
+.main,.favorites{
+	.title-header{
+		color: $netflix-color;
+		margin: 20px 0px;
+		font-weight: bolder;
+	}
+	button{
+		margin:10px 0px;
+		background:$netflix-color;
+		border:0px;
+		color:white;
+	}
+	.fav{
+		background:$netflix-color;
+		border:0px;
+		padding:10px;
+		margin:10px;
+		color:white;
+	}
+	.foto{
+		img{
+			max-width:100%;
+		}
+	}
+	.infos{
+		ul{
+			list-style-type:none;
+			margin:0px;
+			padding:0px;
+			text-align:left;
+			color: #fff;
+			li{
+				width:100%;
+				margin: 10px 0px;
+				&:first-child{
+					margin: 0px;
+				}
+				&.title{
+					h3{
+						font-size:40px;
+						font-weight:bolder;
+						margin:0px;
+					}
+				}
+				&.rating{
+					font-size:16px;
+				}
+				&.year{
+					font-size:16px;
+					color:inherit;	
+				}
+				&.desc{
+					font-size: 16px;
+					p{
+						font-size: 14px;
+					}
+				}
+			}
+		}
+	}
+	.fallback{
+		color:white;
+		font-size:20px;
+		padding:50px 0px
+	}
+}
+

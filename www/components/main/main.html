@@ -1,13 +1,44 @@
-<div> 
-	<input type="text" name="search" ng-model="film" ng-change="getFilm(film)">
-	length {{title.length}}
-	<li ng-show="title.length != 0">
-		<img ng-src="{{title.poster}}" width="100px">
-		<ol>Name: {{title.show_title}}</ol>			
-		<ol>Rating: {{title.rating}}</ol> 
-		<ol>Release Year: {{title.release_year}}</ol>
-	</li>
-	<br>
-	<br>
-	<button ui-sref="favorites">Go To favs</button>
+<div class="container main">
+	<div class="row text-center">
+
+		<div class="col-md-12">
+			<div class="col-sm-6 text-left nopadding">
+				<h3 class="title-header">PIRATEFLIX</h3>
+			</div>
+			<div class="col-sm-6 nopadding text-right">
+				<button ui-sref="favorites" class="favs btn-lg">Go To favs</button>	
+			</div>
+		</div>
+		
+
+		<div class="col-md-12">
+			<div class="form-group">
+			  <input type="text" class="form-control input-lg" placeholder="Search here.." name="search" ng-model="film" ng-change="getFilms(film)">
+			</div>
+		</div>
+
+		<!-- results -->
+		<div class="col-sm-12" ng-show="title.length !== 0">			
+			<div class="col-sm-3 foto">
+				<img ng-src="{{title.Poster}}">
+				<button class="btn-lg fav"> <i class="glyphicon glyphicon-heart"></i> Add Favs</button>
+			</div>
+
+			<div class="col-sm-9 infos">
+				<ul>
+					<li class="title"><h3>{{title.Title}}</h3></li>			
+					<li class="rating"><strong>Rating:</strong> {{title.imdbID}}</li> 
+					<li class="year"><strong>Release Year:</strong> {{title.Year}}</li>
+					<li class="desc"><strong>Description:</strong> <p> {{title.Plot}}</p></li>
+				</ul>				
+			</div>
+		</div>
+
+		<div class="col-sm-12" ng-show="title.length === 0">			
+			<div class="col-sm-12 fallback">
+				<p>Use a busca para achar sua série favorita!</p>
+			</div>
+		</div>
+					
+	</div>
 </div>

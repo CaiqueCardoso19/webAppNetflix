@@ -1,36 +1,30 @@
 angular.module('webAppNetflix')
 
-.controller('mainCtrl', function($scope, mainService, storageUtils){
+.controller('mainCtrl', ($scope, mainService, storageUtils) => {
 
 	$scope.title = []
 	$scope.film 
 
-	$scope.getFilm = function(title) {
+	$scope.getFilms = title => {
 		return mainService.getFilms(title)
 		.then(res => {
-			$scope.title = res.data
+			$scope.title = res
 			var fav = storageUtils.getItem('favorites') || []
 
 			if(fav.length === 0) {
-
-				fav.push(res.data)
+				fav.push(res)
 				storageUtils.setItem('favorites', fav)
-
 			} else {
-
-				if(IsIdInArray(fav, res.data.show_id) === false) {
-					fav.push(res.data)
+				if(IsIdInArray(fav, res.show_id) === false) {
+					fav.push(res)
 					storageUtils.setItem('favorites', fav)							
-				}
-		
+				}		
 			}
-
 		})
 		.catch($scope.titles = [])
-
 	}
 
-	function IsIdInArray(array, id) {
+	const IsIdInArray = (array, id) => {
 		var isTrue = false
 
 	  array.forEach(item => {
