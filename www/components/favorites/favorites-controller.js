@@ -50,7 +50,6 @@ angular.module('webAppNetflix')
 	        return filter    		
     	}
 		
-		favs.sort(Year)
     	return favs
     }
 

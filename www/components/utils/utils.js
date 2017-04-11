@@ -48,7 +48,7 @@ angular.module('webAppNetflix')
     replace:true,
     scope:true,
     link: function postLink(scope, element, attrs) {
-      debugger
+      
         scope.$watch(attrs.visible, function(value){
         if(value == true)
           $(element).modal('show');
