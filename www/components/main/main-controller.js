@@ -2,31 +2,37 @@ angular.module('webAppNetflix')
 
 .controller('mainCtrl', function($scope, mainService, storageUtils){
 
-	$scope.title = []
+	$scope.title = null
 	$scope.film 
 
 	$scope.getFilm = function(title) {
 		return mainService.getFilms(title)
 		.then(res => {
-			$scope.title = res.data
-			var fav = storageUtils.getItem('favorites') || []
-
-			if(fav.length === 0) {
-
-				fav.push(res.data)
-				storageUtils.setItem('favorites', fav)
-
+			if(res.data.Response !== 'True') {
+				$scope.title = null
 			} else {
-
-				if(IsIdInArray(fav, res.data.show_id) === false) {
-					fav.push(res.data)
-					storageUtils.setItem('favorites', fav)							
-				}
-		
+				$scope.title = res.data
 			}
-
 		})
-		.catch($scope.titles = [])
+		.catch($scope.title = null)
+
+	}
+
+	$scope.addToFavorite = (movie) => {
+		var fav = storageUtils.getItem('favorites') || []
+
+		if(fav.length === 0) {
+
+			fav.push(movie)
+			storageUtils.setItem('favorites', fav)
+
+		} else {
+
+			if(IsIdInArray(fav, movie.imdbID) === false) {
+				fav.push(movie)
+				storageUtils.setItem('favorites', fav)							
+			}
+		}
 
 	}
 
@@ -34,7 +40,7 @@ angular.module('webAppNetflix')
 		var isTrue = false
 
 	  array.forEach(item => {
-	  	if(item.show_id === id) {
+	  	if(item.imdbID === id) {
 	  		isTrue = true
 	  	}
 	  })

@@ -1,1 +1,13 @@
-FAVORITES
+Filtered by year
+<select ng-options="year as year for year in years" ng-model="year"></select>
+Filtered by genre
+<select ng-options="genre as genre for genre in genres" ng-model="genre"></select>
+Filtered by rating
+<input type="number" max="10" name="rating" ng-model="rating" />
+
+<ul ng-repeat="fav in favs | yearFilter:year | genreFilter:genre | ratingFilter:rating">
+	<li>Name: {{fav.Title}}</li>
+	<li>Year: {{fav.Year}}</li>
+	<li>Genre: {{fav.Genre}}</li>
+	<li>Rating: {{fav.imdbRating}}</li>
+</ul>

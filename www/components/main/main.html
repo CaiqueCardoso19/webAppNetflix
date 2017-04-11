@@ -1,12 +1,18 @@
 <div> 
 	<input type="text" name="search" ng-model="film" ng-change="getFilm(film)">
-	length {{title.length}}
-	<li ng-show="title.length != 0">
-		<img ng-src="{{title.poster}}" width="100px">
-		<ol>Name: {{title.show_title}}</ol>			
-		<ol>Rating: {{title.rating}}</ol> 
-		<ol>Release Year: {{title.release_year}}</ol>
-	</li>
+	length {{title}}
+	<div ng-show="title !== null">
+		<ul>
+			<img ng-src="{{title.Poster}}" width="100px" err-src="http://google.com/favicon.ico">
+			<li>Name: {{title.Title}}</li>			
+			<li>Rating: {{title.rating}}</li> 
+			<li>Release Year: {{title.release_year}}</li>
+			
+
+		</ul>		
+			<button ng-click="addToFavorite(title)">add</button>	
+	</div>
+
 	<br>
 	<br>
 	<button ui-sref="favorites">Go To favs</button>
