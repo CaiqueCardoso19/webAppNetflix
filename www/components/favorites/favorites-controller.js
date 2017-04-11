@@ -12,7 +12,9 @@ angular.module('webAppNetflix')
     	let genreStr = fav.Genre
 
     	$scope.years = $scope.years.concat(yearStr.match(/\d{4}/g))
-    	$scope.genres = $scope.genres.concat(genreStr.match(/[\w-]+/g))
+
+    	if(genreStr !== 'N/A')
+    		$scope.genres = $scope.genres.concat(genreStr.match(/[\w-]+/g))
     	
     })
 
@@ -47,7 +49,8 @@ angular.module('webAppNetflix')
 
 	        return filter    		
     	}
-
+		
+		favs.sort(Year)
     	return favs
     }
 
@@ -63,12 +66,12 @@ angular.module('webAppNetflix')
 	        
 	        var filter = favs
 	        .map(fav => {
-	        	const str = fav.Genre
+	        	let str = fav.Genre
 	        	fav.matchGenre = str.match(/[\w-]+/g)
 	        	return fav
 	        }) 
 	        .filter(fav => fav.matchGenre.indexOf(genre) > -1)
-	        
+
 	        return filter
         }	
 

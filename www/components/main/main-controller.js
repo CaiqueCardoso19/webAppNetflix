@@ -3,7 +3,10 @@ angular.module('webAppNetflix')
 .controller('mainCtrl', ($scope, mainService, storageUtils) => {
 
 	$scope.title = null
-	$scope.film 
+	$scope.film
+    $scope.showModal = false;
+    $scope.buttonClicked = "";
+    console.log($scope)	
 
 	$scope.getFilms = title => {
 		return mainService.getFilms(title)
@@ -34,6 +37,12 @@ angular.module('webAppNetflix')
 			
 		}
 	}
+
+    $scope.toggleModal = function(btnClicked){
+    	debugger
+        $scope.buttonClicked = btnClicked;
+        $scope.showModal = !$scope.showModal;
+    };
 
 	const IsIdInArray = (array, id) => {
 		var isTrue = false

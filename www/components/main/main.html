@@ -3,7 +3,7 @@
 
 		<div class="col-md-12">
 			<div class="col-sm-6 text-left nopadding">
-				<h3 class="title-header">PIRATEFLIX</h3>
+				<h3 class="title-header" ui-sref="main">PIRATEFLIX</h3>
 			</div>
 			<div class="col-sm-6 nopadding text-right">
 				<button ui-sref="favorites" class="favs btn-lg">Go To favs</button>	
@@ -20,8 +20,8 @@
 		<div ng-show="title !== null">
 			<div class="col-sm-12">			
 				<div class="col-sm-3 foto">
-					<img ng-src="{{title.Poster}}" err-src="http://google.com/favicon.ico">
-					<button class="btn-lg fav" ng-click="addToFavorite(title); modalShow()" data-toggle="modal" data-target="#myModal"> <i class="glyphicon glyphicon-heart"></i> Add Favs</button>
+					<img ng-src="{{title.Poster}}" err-src="http://optionsteaching.com/newwordpresshtml/wp-content/themes/hamza-lite/images/portfolio-fallback.jpg">
+					<button class="btn-lg fav" ng-click="addToFavorite(title); toggleModal('Success')" data-toggle="modal" data-target="#myModal"> <i class="glyphicon glyphicon-heart"></i> Add Favs</button>
 				</div>
 
 				<div class="col-sm-9 infos">
@@ -40,6 +40,9 @@
 				<p>Use the search to find your favorite series!</p>
 			</div>
 		</div>
+
+		<modal visible="showModal" id="modal">
+		</modal>		
 					
 	</div>
 </div>
