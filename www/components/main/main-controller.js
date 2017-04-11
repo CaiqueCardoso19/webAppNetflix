@@ -9,16 +9,27 @@ angular.module('webAppNetflix')
     console.log($scope)	
 
 	$scope.getFilms = title => {
+		
+		
 		return mainService.getFilms(title)
 		.then(res => {
 			if(res.data.Response !== 'True') {
 				$scope.title = null
-			} else {
-				$scope.title = res.data
+			} else {				
+				$scope.title = res.data.imdbRating
 			}
 		})
 		.catch($scope.title = null)
 	}
+
+// var exists = false
+
+// 	favs.filter(fav => { 
+// 	if(res.data.imdbRating === fav.imdbRating) {
+// 		exists = true
+// 	}
+	
+// })	
 
 	$scope.addToFavorite = (movie) => {
 		var fav = storageUtils.getItem('favorites') || []
