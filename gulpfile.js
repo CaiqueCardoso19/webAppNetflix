@@ -97,7 +97,8 @@ gulp.task('watch', () => {
 gulp.task('default', 
   runSequence(
     'clean',
-    ['copy-index',  'copy-views',  'copy-assets',  'copy-lib', 'fonts', 'sass', 'js-app', 'browser-sync'],
+    ['copy-index',  'copy-views',  'copy-assets',  'copy-lib', 'fonts', 'sass', 'js-app'],
+    'browser-sync',
     'watch'
   )
 )
