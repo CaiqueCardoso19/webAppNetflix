@@ -4,33 +4,136 @@ angular.module('webAppNetflix', ['ui.router']).config(function ($stateProvider, 
 
 	$urlRouterProvider.otherwise('/main');
 });
+angular.module('webAppNetflix').controller('favoritesCtrl', function ($scope, mainService, storageUtils) {
+
+	$scope.favs = storageUtils.getItem('favorites') || [];
+	$scope.years = [];
+	$scope.genres = [];
+
+	$scope.favs.map(function (fav, index) {
+		var yearStr = fav.Year;
+		var genreStr = fav.Genre;
+
+		$scope.years = $scope.years.concat(yearStr.match(/\d{4}/g));
+		$scope.genres = $scope.genres.concat(genreStr.match(/[\w-]+/g));
+	});
+
+	$scope.years = $scope.years.filter(function (v, i, a) {
+		return a.indexOf(v) === i;
+	});
+
+	$scope.years = $scope.years.sort(function (a, b) {
+		return b - a;
+	});
+
+	$scope.genres = $scope.genres.filter(function (v, i, a) {
+		return a.indexOf(v) === i;
+	});
+
+	$scope.genres = $scope.genres.sort();
+}).filter('yearFilter', function () {
+
+	return function (favs, args) {
+
+		if (args) {
+			var year = args;
+
+			var filter = favs.map(function (fav) {
+				var str = fav.Year;
+				fav.matchYear = str.match(/\d{4}/g);
+				return fav;
+			}).filter(function (fav) {
+				return fav.matchYear.indexOf(year) > -1;
+			});
+
+			return filter;
+		}
+
+		return favs;
+	};
+}).filter('genreFilter', function () {
+
+	return function (favs, args) {
+		// 
+		if (args) {
+			var genre = args;
+
+			var filter = favs.map(function (fav) {
+				var str = fav.Genre;
+				fav.matchGenre = str.match(/[\w-]+/g);
+				return fav;
+			}).filter(function (fav) {
+				return fav.matchGenre.indexOf(genre) > -1;
+			});
+
+			return filter;
+		}
+
+		return favs;
+	};
+}).filter('ratingFilter', function () {
+
+	return function (favs, args) {
+
+		if (args) {
+			var rating = parseFloat(args);
+
+			var filter = favs.map(function (fav) {
+				fav.imdbRating = parseFloat(fav.imdbRating);
+				return fav;
+			}).filter(function (fav) {
+				return fav.imdbRating >= rating;
+			});
+
+			return filter;
+		}
+
+		return favs;
+	};
+});
+angular.module('webAppNetflix').config(function ($stateProvider, $urlRouterProvider) {
+	$stateProvider.state('favorites', {
+		url: '/favorites',
+		templateUrl: 'components/favorites/favorites.html',
+		controller: 'favoritesCtrl'
+	});
+});
 angular.module('webAppNetflix').controller('mainCtrl', function ($scope, mainService, storageUtils) {
 
-	$scope.title = [];
+	$scope.title = null;
 	$scope.film;
 
 	$scope.getFilms = function (title) {
 		return mainService.getFilms(title).then(function (res) {
-			$scope.title = res;
-			var fav = storageUtils.getItem('favorites') || [];
-
-			if (fav.length === 0) {
-				fav.push(res);
-				storageUtils.setItem('favorites', fav);
+			if (res.data.Response !== 'True') {
+				$scope.title = null;
 			} else {
-				if (IsIdInArray(fav, res.show_id) === false) {
-					fav.push(res);
-					storageUtils.setItem('favorites', fav);
-				}
+				$scope.title = res.data;
 			}
-		}).catch($scope.titles = []);
+		}).catch($scope.title = null);
+	};
+
+	$scope.addToFavorite = function (movie) {
+		var fav = storageUtils.getItem('favorites') || [];
+
+		if (fav.length === 0) {
+
+			fav.push(movie);
+			storageUtils.setItem('favorites', fav);
+		} else {
+
+			if (IsIdInArray(fav, movie.imdbID) === false) {
+				fav.push(movie);
+				storageUtils.setItem('favorites', fav);
+			}
+		}
 	};
 
 	var IsIdInArray = function IsIdInArray(array, id) {
 		var isTrue = false;
 
 		array.forEach(function (item) {
-			if (item.show_id === id) {
+			if (item.imdbID === id) {
 				isTrue = true;
 			}
 		});
@@ -44,16 +147,24 @@ angular.module('webAppNetflix').service('mainService', function ($http, $q) {
 	};
 
 	function getFilms(title) {
+		var q = $q.defer();
 		var req = {
 			url: 'http://www.omdbapi.com/?t=' + title,
 			method: 'GET'
 		};
 
-		return $http(req).then(function (res) {
-			return res.data;
+		$http(req).then(function (res) {
+
+			if (res.data.Response === 'True') {
+				q.resolve(res);
+			} else {
+				q.reject(res.data.Response);
+			}
 		}).catch(function (err) {
-			return err;
+			return q.reject(err);
 		});
+
+		return q.promise;
 	}
 });
 angular.module('webAppNetflix').config(function ($stateProvider, $urlRouterProvider) {
@@ -81,14 +192,14 @@ angular.module('webAppNetflix').factory('storageUtils', function () {
 			return;
 		}
 	};
-});
-angular.module('webAppNetflix').controller('favoritesCtrl', function ($scope, mainService, storageUtils) {
-	console.log("favs");
-});
-angular.module('webAppNetflix').config(function ($stateProvider, $urlRouterProvider) {
-	$stateProvider.state('favorites', {
-		url: '/favorites',
-		templateUrl: 'components/favorites/favorites.html',
-		controller: 'favoritesCtrl'
-	});
+}).directive('errSrc', function () {
+	return {
+		link: function link(scope, element, attrs) {
+			element.bind('error', function () {
+				if (attrs.src != attrs.errSrc) {
+					attrs.$set('src', attrs.errSrc);
+				}
+			});
+		}
+	};
 });

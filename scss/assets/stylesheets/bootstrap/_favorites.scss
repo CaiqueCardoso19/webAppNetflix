@@ -1,13 +1,23 @@
 .favorites{
 	.title{
-		color:white;
-		font-size:45px;
+		color: white;
+		h4{
+			font-size: 30px;
+			color: $netflix-color;
+		}
 	}
 	.item{
+		margin-bottom: 10px;
+		margin-top: 10px;
 		.foto{
 			img{
 				max-width:100%;
 			}
+		}
+	}
+	.group{
+		.md{
+			max-width: 100%;
 		}
 	}
 }

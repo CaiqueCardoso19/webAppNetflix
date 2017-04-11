@@ -10,28 +10,57 @@
 		</div>
 
 		<div class="col-xs-12 text-center title">
-			<h3><i class="glyphicon glyphicon-heart"></i> Favorites</h3>
+			<h4><i class="glyphicon glyphicon-heart"></i> Favorites</h4>
 		</div>
-
-		<div class="col-sm-12 nopadding item"><!--  repeat -->		
-			
-			<div class="col-sm-2 foto">
-				<img ng-src="{{title.Poster}}" src="https://images-na.ssl-images-amazon.com/images/M/MV5BZDNhNzhkNDctOTlmOS00NWNmLWEyODQtNWMxM2UzYmJiNGMyXkEyXkFqcGdeQXVyNTMxMjgxMzA@._V1_SX300.jpg">
+		
+		<div ng-show="favs.length !== 0">
+			<div class="input-group group col-sm-12 filters">				
+				<div class="col-sm-4">
+					Filtered by year
+					<select  class="form-control md" ng-options="year as year for year in years" ng-model="year">
+						<option value="">Select year</option>
+					</select>					
+				</div>
+				<div class="col-sm-4">
+					Filtered by genre
+					<select class="form-control md" ng-options="genre as genre for genre in genres" ng-model="genre">						
+						<option value="">Select genre</option>
+					</select>					
+				</div>
+				<div class="col-sm-4">
+					Filtered by rating
+					<input class="form-control md" placeholder="Type between 0-10" type="number" min="0" max="10" name="rating" ng-model="rating" />						
+				</div>				
+		
 			</div>
 
-			<div class="col-sm-10 infos">
-				<ul>
-					<li class="title"><h3>Breaking Bad</h3></li>			
-					<li class="rating"><strong>Rating:</strong> 13.9</li> 
-					<li class="year"><strong>Release Year:</strong> 2012/2013</li>
-					<li class="desc"><strong>Description:</strong>
-						<p>
-							Eiiitaaa Mainhaaa!! Esse Lorem ipsum é só na sacanageeem!! E que abundância meu irmão viuu!! Assim você vai matar o papai. Só digo uma coisa, Domingo ela não vai! Danadaa!! Vem minha odalisca, agora faz essa cobra coral subir!!! Pau que nasce torto, Nunca se endireita. Tchannn!! Tchannn!! Tu du du pááá! Eu gostchu muitchu, heinn! danadinha! Mainhaa! Agora use meu lorem ipsum ordinária!!! Olha o quibeee! rema, rema, ordinária!.
-						 </p>
-					</li>
-				</ul>				
-			</div>
+			<div class="col-sm-12 nopadding item m-t-10" ng-repeat="fav in favs | yearFilter:year | genreFilter:genre | ratingFilter:rating">
+				
+				<div class="col-sm-2 foto">
+					<img ng-src="{{fav.Poster}}">
+				</div>
 
+				<div class="col-sm-10 infos">
+					<ul>
+						<li class="title"><h3>{{fav.Title}}</h3></li>			
+						<li class="rating"><strong>Rating:</strong> {{fav.imdbRating}}</li> 
+						<li class="year"><strong>Release Year:</strong> {{fav.Year}}</li>
+						<li class="desc"><strong>Description:</strong>
+							<p>
+								{{fav.Plot}}
+							</p>
+						</li>
+					</ul>				
+				</div>
+
+			</div>			
 		</div>
+		
+	</div>
+	<div class="col-sm-12 fallback" ng-show="favs.length === 0">
+		<center>
+			<i class="glyphicon glyphicon-thumbs-down"></i>
+			<p>You have no favorites to display !</p>
+		</center>
 	</div>
 </div>

@@ -37,6 +37,11 @@ gulp.task('copy-assets', () =>
       .pipe(gulp.dest(`./${BUILD_DIR}/assets`))
 )
 
+gulp.task('fonts', () => { 
+  gulp.src('./scss/assets/fonts/bootstrap/*.{eot,svg,ttf,woff,woff2}')
+      .pipe(gulp.dest(`${BUILD_DIR}/fonts/bootstrap`))
+})
+
 gulp.task('sass', () => { 
   gulp.src('./scss/assets/stylesheets/*.scss')
       .pipe(sass())
@@ -92,7 +97,7 @@ gulp.task('watch', () => {
 gulp.task('default', 
   runSequence(
     'clean',
-    ['copy-index',  'copy-views',  'copy-assets',  'copy-lib',  'sass',  'js-app', 'browser-sync'],
+    ['copy-index',  'copy-views',  'copy-assets',  'copy-lib', 'fonts', 'sass', 'js-app', 'browser-sync'],
     'watch'
   )
 )

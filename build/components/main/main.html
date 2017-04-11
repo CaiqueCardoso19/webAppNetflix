@@ -17,28 +17,30 @@
 			</div>
 		</div>
 
-		<!-- results -->
-		<div class="col-sm-12" ng-show="title.length !== 0">			
-			<div class="col-sm-3 foto">
-				<img ng-src="{{title.Poster}}">
-				<button class="btn-lg fav"> <i class="glyphicon glyphicon-heart"></i> Add Favs</button>
-			</div>
+		<div ng-show="title !== null">
+			<div class="col-sm-12">			
+				<div class="col-sm-3 foto">
+					<img ng-src="{{title.Poster}}" err-src="http://google.com/favicon.ico">
+					<button class="btn-lg fav" ng-click="addToFavorite(title); modalShow()" data-toggle="modal" data-target="#myModal"> <i class="glyphicon glyphicon-heart"></i> Add Favs</button>
+				</div>
 
-			<div class="col-sm-9 infos">
-				<ul>
-					<li class="title"><h3>{{title.Title}}</h3></li>			
-					<li class="rating"><strong>Rating:</strong> {{title.imdbID}}</li> 
-					<li class="year"><strong>Release Year:</strong> {{title.Year}}</li>
-					<li class="desc"><strong>Description:</strong> <p> {{title.Plot}}</p></li>
-				</ul>				
+				<div class="col-sm-9 infos">
+					<ul>
+						<li class="title"><h3>{{title.Title}}</h3></li>			
+						<li class="rating"><strong>Rating:</strong> {{title.imdbRating}}</li> 
+						<li class="year"><strong>Release Year:</strong> {{title.Year}}</li>
+						<li class="desc"><strong>Description:</strong> <p> {{title.Plot}}</p></li>
+					</ul>				
+				</div>
 			</div>
 		</div>
 
-		<div class="col-sm-12" ng-show="title.length === 0">			
+		<div class="col-sm-12" ng-show="title === null">			
 			<div class="col-sm-12 fallback">
-				<p>Use a busca para achar sua série favorita!</p>
+				<p>Use the search to find your favorite series!</p>
 			</div>
 		</div>
 					
 	</div>
 </div>
+

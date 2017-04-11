@@ -2,39 +2,49 @@ angular.module('webAppNetflix')
 
 .controller('mainCtrl', ($scope, mainService, storageUtils) => {
 
-	$scope.title = []
+	$scope.title = null
 	$scope.film 
 
 	$scope.getFilms = title => {
 		return mainService.getFilms(title)
 		.then(res => {
-			$scope.title = res
-			var fav = storageUtils.getItem('favorites') || []
-
-			if(fav.length === 0) {
-				fav.push(res)
-				storageUtils.setItem('favorites', fav)
+			if(res.data.Response !== 'True') {
+				$scope.title = null
 			} else {
-				if(IsIdInArray(fav, res.show_id) === false) {
-					fav.push(res)
-					storageUtils.setItem('favorites', fav)							
-				}		
+				$scope.title = res.data
 			}
 		})
-		.catch($scope.titles = [])
+		.catch($scope.title = null)
+	}
+
+	$scope.addToFavorite = (movie) => {
+		var fav = storageUtils.getItem('favorites') || []
+
+		if(fav.length === 0) {
+
+			fav.push(movie)
+			storageUtils.setItem('favorites', fav)
+
+		} else {
+
+			if(IsIdInArray(fav, movie.imdbID) === false) {
+				fav.push(movie)
+				storageUtils.setItem('favorites', fav)							
+			}
+			
+		}
 	}
 
 	const IsIdInArray = (array, id) => {
 		var isTrue = false
 
 	  array.forEach(item => {
-	  	if(item.show_id === id) {
+	  	if(item.imdbID === id) {
 	  		isTrue = true
 	  	}
 	  })
 
 	  return isTrue
 	}
-
-
+	
 })

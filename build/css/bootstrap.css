@@ -5872,8 +5872,16 @@ body {
   padding: 50px 0px; }
 
 .favorites .title {
-  color: white;
-  font-size: 45px; }
+  color: white; }
+  .favorites .title h4 {
+    font-size: 30px;
+    color: #e50914; }
 
-.favorites .item .foto img {
+.favorites .item {
+  margin-bottom: 10px;
+  margin-top: 10px; }
+  .favorites .item .foto img {
+    max-width: 100%; }
+
+.favorites .group .md {
   max-width: 100%; }
