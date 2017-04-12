@@ -9,18 +9,17 @@ angular.module('webAppNetflix')
     console.log($scope)	
 
 	$scope.getFilms = title => {
-		
-		
 		return mainService.getFilms(title)
 		.then(res => {
 			if(res.data.Response !== 'True') {
 				$scope.title = null
 			} else {				
-				$scope.title = res.data.imdbRating
+				$scope.title = res.data
 			}
 		})
 		.catch($scope.title = null)
 	}
+
 
 // var exists = false
 
