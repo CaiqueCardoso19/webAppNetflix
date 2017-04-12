@@ -4,31 +4,22 @@ angular.module('webAppNetflix')
 
 	$scope.title = null
 	$scope.film
-    $scope.showModal = false;
-    $scope.buttonClicked = "";
-    console.log($scope)	
+	$scope.showModal = false;
+	$scope.buttonClicked = "";
 
 	$scope.getFilms = title => {
 		return mainService.getFilms(title)
 		.then(res => {
+
 			if(res.data.Response !== 'True') {
 				$scope.title = null
 			} else {				
 				$scope.title = res.data
 			}
+
 		})
 		.catch($scope.title = null)
 	}
-
-
-// var exists = false
-
-// 	favs.filter(fav => { 
-// 	if(res.data.imdbRating === fav.imdbRating) {
-// 		exists = true
-// 	}
-	
-// })	
 
 	$scope.addToFavorite = (movie) => {
 		var fav = storageUtils.getItem('favorites') || []
@@ -41,29 +32,31 @@ angular.module('webAppNetflix')
 		} else {
 
 			if(IsIdInArray(fav, movie.imdbID) === false) {
+
 				fav.push(movie)
-				storageUtils.setItem('favorites', fav)							
+				storageUtils.setItem('favorites', fav)			
+
 			}
-			
+
 		}
 	}
 
-    $scope.toggleModal = function(btnClicked){
-    	debugger
-        $scope.buttonClicked = btnClicked;
-        $scope.showModal = !$scope.showModal;
-    };
+	$scope.toggleModal = function(btnClicked){
+		
+		$scope.buttonClicked = btnClicked;
+		$scope.showModal = !$scope.showModal;
+	};
 
 	const IsIdInArray = (array, id) => {
 		var isTrue = false
 
-	  array.forEach(item => {
-	  	if(item.imdbID === id) {
-	  		isTrue = true
-	  	}
-	  })
+		array.forEach(item => {
+			if(item.imdbID === id) {
+				isTrue = true
+			}
+		})
 
-	  return isTrue
+		return isTrue
 	}
-	
+
 })

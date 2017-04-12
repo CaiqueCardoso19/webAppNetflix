@@ -8,8 +8,8 @@ angular.module('webAppNetflix')
 	function getFilms(title) {
 		var q = $q.defer()
 		var req = {
-			url: `http://www.omdbapi.com/?t=${title}`,
-			method: 'GET'
+		url: `http://www.omdbapi.com/?t=${title}`,
+		method: 'GET'
 		}
 
 		$http(req)
@@ -27,5 +27,5 @@ angular.module('webAppNetflix')
 		return q.promise
 	}
 
-	
+
 })
